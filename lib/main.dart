@@ -1,11 +1,11 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flight_system/Auth/LoginWidget.dart';
-import 'package:flight_system/Auth/home_page.dart';
+import 'package:flight_system/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:provider/provider.dart';
+import 'package:flight_system/Admin/AdminFlight.dart';
+import 'package:flight_system/Admin/Admin.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +39,7 @@ class MainPage extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context,snapshot){
         if(snapshot.hasData){
-          return HomePage();
+          return AdminDashboard();
         }
         return LoginWidget();
       },

@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginWidget extends StatefulWidget {
-  const LoginWidget({Key? key}) : super(key: key);
 
   @override
   State<LoginWidget> createState() => _LoginWidgetState();
@@ -49,7 +48,7 @@ padding: EdgeInsets.all(16),
           ),
           icon: Icon(Icons.lock_open,size: 32,),
           label: Text(
-            'Sign in',
+            "Sign in",
             style: TextStyle(fontSize: 24),
           ),
           onPressed: signIn,
