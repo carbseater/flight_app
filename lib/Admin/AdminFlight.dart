@@ -44,6 +44,9 @@ class MyCustomFormState extends State<MyCustomForm> {
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
   final _formKey = GlobalKey<FormState>();
+  TextEditingController timeinput = TextEditingController();
+  //text editing controller for text field
+  TextEditingController timeinput2 = TextEditingController();
   final _database = FirebaseDatabase.instance.reference();
   Future<void> _inputUserEventData() async {
     final nextEvent = <String, dynamic>{
@@ -64,6 +67,8 @@ class MyCustomFormState extends State<MyCustomForm> {
 
 
   DateTime time_slot = DateTime.now();
+  String source="";
+  String dest="";
 
   String selected_slot = "C";
   String final_selected_time = "";
@@ -71,9 +76,14 @@ class MyCustomFormState extends State<MyCustomForm> {
   DateTime currentDate = DateTime.now();
 
   bool already_slot_exist = false;
-  int fare=0;
+  String fare="";
   String name="";
   String flightNumber="";
+
+  String seats="";
+
+
+
 
 
   Future<void> _selectDate(BuildContext context) async {
@@ -91,9 +101,7 @@ class MyCustomFormState extends State<MyCustomForm> {
       });
   }
 
-  TextEditingController timeinput = TextEditingController();
-  //text editing controller for text field
-  TextEditingController timeinput2 = TextEditingController();
+
 
 
   @override
@@ -123,7 +131,12 @@ class MyCustomFormState extends State<MyCustomForm> {
               if (value!.isEmpty) {
                 return 'Please enter some text';
               }
-              name=value;
+
+            },
+            onChanged: (val){
+              setState(() {
+                name=val;
+              });
             },
           ),
           TextFormField(
@@ -136,7 +149,66 @@ class MyCustomFormState extends State<MyCustomForm> {
               if (value!.isEmpty) {
                 return 'Please enter valid Flight Number';
               }
-              flightNumber=value;
+
+            },
+            onChanged: (val){
+              setState(() {
+                flightNumber=val;
+              });
+            },
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              icon: const Icon(Icons.person),
+              hintText: 'Source point',
+              labelText: 'Source',
+            ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter some text';
+              }
+
+            },
+            onChanged: (val){
+              setState(() {
+                source=val;
+              });
+            },
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              icon: const Icon(Icons.person),
+              hintText: 'Destination Point',
+              labelText: 'Destination',
+            ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter some text';
+              }
+
+            },
+            onChanged: (val){
+              setState(() {
+                dest=val;
+              });
+            },
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              icon: const Icon(Icons.phone),
+              hintText: 'Total Seats ',
+              labelText: 'Total Seats',
+            ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter valid Flight Number';
+              }
+
+            },
+            onChanged: (val){
+              setState(() {
+                seats=val;
+              });
             },
           ),
           TextFormField(
@@ -149,7 +221,12 @@ class MyCustomFormState extends State<MyCustomForm> {
               if (value!.isEmpty) {
                 return 'Please enter valid date';
               }
-              fare=value as int;
+
+            },
+            onChanged: (val){
+              setState(() {
+                fare=val;
+              });
             },
           ),
           Padding(
@@ -213,39 +290,32 @@ class MyCustomFormState extends State<MyCustomForm> {
               }
             },
           ),
-          TextField(
-            controller: timeinput2, //editing controller of this TextField
-            decoration: InputDecoration(
-                icon: Icon(Icons.timer), //icon of text field
-                labelText: "Scheduled Arrival Time" //label text of field
-            ),
-            readOnly: true,  //set it true, so that user will not able to edit text
-            onTap: () async {
-              TimeOfDay? pickedTime =  await showTimePicker(
-                initialTime: TimeOfDay.now(),
-                context: context,
-              );
 
-              if(pickedTime != null ){
-                print(pickedTime.format(context));   //output 10:51 PM
-                DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
-                //converting to DateTime so that we can further format on different pattern.
-                print(parsedTime); //output 1970-01-01 22:53:00.000
-                String formattedTime = DateFormat('HH:mm:ss').format(parsedTime);
-                print(formattedTime); //output 14:59:00
-                //DateFormat() is from intl package, you can format the time on any pattern you need.
-
-                setState(() {
-                  timeinput2.text = formattedTime; //set the value of text field.
-                });
-              }else{
-                print("Time is not selected");
-              }
-            },
-          ),
           ElevatedButton(
               onPressed: () async {
-                await _inputUserEventData();
+
+                if (_formKey.currentState!.validate()) {
+                  // If the form is valid, display a snackbar. In the real world,
+                  // you'd often call a server or save the information in a database.
+                  await _database.child("/flights").push().update({
+                    'name':name,
+                    'flightNumber':flightNumber,
+                    'fare':fare,
+                    'date':showTime,
+                    'scheduled_departure':timeinput.text,
+                    'source':source,
+                    'dest':dest,
+                    'total_seats':seats,
+                    'Available_seats':seats
+
+
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Processing Data')),
+
+                  );
+                }
+
               },
               child: Text("Submit"))
 

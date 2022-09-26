@@ -1,6 +1,7 @@
-// import 'main.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flight_system/Admin/AdminFlight.dart';
+import 'package:flight_system/Admin/ViewFlights.dart';
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({Key? key}) : super(key: key);
 
@@ -19,6 +20,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
       ),
       body: Container(
+        alignment: Alignment.center,
         child: Column(
           children: [
             GestureDetector(
@@ -37,7 +39,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
               ),
             ),
             GestureDetector(
-              onTap: () => null,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ViewFlights()),
+              ),
               child:  Card(
                 elevation: 0,
                 color: Theme.of(context).colorScheme.onPrimary,
@@ -48,18 +53,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
               ),
             ),
-            GestureDetector(
-              onTap: () => null,
-              child:  Card(
-                elevation: 0,
-                color: Theme.of(context).colorScheme.onPrimary,
-                child: const SizedBox(
-                  width: 300,
-                  height: 100,
-                  child: Center(child: Text('Remove Flights')),
-                ),
-              ),
-            ),
+
           ],
         ),
       ),
