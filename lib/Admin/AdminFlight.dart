@@ -205,9 +205,10 @@ class MyCustomFormState extends State<MyCustomForm> {
               }
 
             },
+           // keyboardType: TextInputType.number,
             onChanged: (val){
               setState(() {
-                seats=val;
+                seats=val ;
               });
             },
           ),
@@ -217,6 +218,7 @@ class MyCustomFormState extends State<MyCustomForm> {
               hintText: 'Fare ',
               labelText: 'Fare',
             ),
+
             validator: (value) {
               if (value!.isEmpty) {
                 return 'Please enter valid date';

@@ -38,12 +38,14 @@ class _UserPageState extends State<UserPage> {
     result.forEach((key, value) {
       Map<dynamic, dynamic> map = value;
       list.add(Flight(
+          seats:map['total_seats'],
+          flightNumber: map['flightNumber'],
           time: map['scheduled_departure'],
           name: map['name'],
           source: map['source'],
           dest: map['dest'],
           date: map['date'],
-          seats: map['seats'],
+
           fare: map['fare']
       ));
 

@@ -6,8 +6,10 @@ class Flight {
   final String date;
   final String seats;
   final String fare;
+  final String flightNumber;
 
   const Flight({
+    required this.flightNumber,
     required this.source,
     required this.dest,
     required this.time,
@@ -24,7 +26,8 @@ class Flight {
     dest: json['dest'],
     date: json['date'],
     seats: json['seats'],
-    fare: json['fare']
+    fare: json['fare'],
+    flightNumber : json['flightNumber']
   );
 
   Map<String, dynamic> toJson() => {
@@ -34,6 +37,7 @@ class Flight {
     'dest':dest,
     'date':date,
     'fare':fare,
-    'seats':seats
+    'seats':seats,
+    'flightNumber':flightNumber
   };
 }
